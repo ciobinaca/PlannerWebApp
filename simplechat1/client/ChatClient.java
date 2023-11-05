@@ -64,7 +64,7 @@ public class ChatClient extends AbstractClient
    * @param message The message from the UI.    
    */
   public void handleMessageFromClientUI(String message)
-  {
+  {  if(!message.startsWith("#"))
     try
     {
       sendToServer(message);
@@ -73,6 +73,43 @@ public class ChatClient extends AbstractClient
     {
       clientUI.display
         ("Could not send message to server.  Terminating client.");
+      quit();
+    }
+    else if(message.startsWith("#quit"))
+   try {
+     clientUI.display
+             ("Terminating client");
+     closeConnection();
+     quit();
+   }
+   catch(IOException e)
+   {
+     clientUI.display
+             ("Could not terminate client.");
+     quit();
+   }
+  else if(message.startsWith("#logoff"))
+    try {
+      clientUI.display
+              ("Logging off.");
+      closeConnection();
+    }
+    catch(IOException e)
+    {
+      clientUI.display
+              ("Could not log off.");
+      quit();
+    }
+  else if(message.startsWith("#sethost"))
+    if(isConnected())
+    {
+      clientUI.display
+              ("Can't set host.");
+    }
+  else{
+      clientUI.display
+              ("Setting host.");
+      setHost(message.substring(4));
       quit();
     }
   }
