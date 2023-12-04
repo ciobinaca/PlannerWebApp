@@ -1,0 +1,17 @@
+Functionalitati aplicatie Planner
+
+Tasks
+- pot fi sortate in functie de categorie(Category), prioritate sau status(ex: in curs de procesare, incepute, finalizate)
+- are o data de inceput, de sfarsit, scurta descriere
+
+Reminder
+-pot fi setate memento uri pentru task urile ce urmeaza sa fie efectuate
+-pagina de inceput va afisa remindere pt task urile ce se apropie
+
+User
+- profilul cu date ce pot fi schimbate
+
+Journal
+- notitele pt fiecare zi 
+
+
