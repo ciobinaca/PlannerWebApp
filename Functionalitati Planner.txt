@@ -1,0 +1,29 @@
+Functionalitati aplicatie Planner
+
+Task
+-in relatie de many-to-one cu tabelul Category(o categorie are mai multe task uri) si one-to-many cu tabelul Reminder(un task are mai multe remindere)
+-pot fi sortate in functie de categorie(Category), prioritate sau status(ex: in curs de procesare, incepute, finalizate)
+-poti seta un status pentru ele
+-are o data de inceput, de sfarsit, scurta descriere
+-Task urile efectuate vor disparea dupa o anumita perioada de timp
+
+Category
+-in relatie de one-to-many cu tabelul Task
+-vor fi afisate pe pagina cu task-uri, in meniu
+
+Reminder
+-in relatie de many-to-one cu tabelul Task(un task poate avea multiple remindere)
+-pot fi setate memento uri pentru task urile ce urmeaza sa fie efectuate
+-contin deadline(ora, data)
+-vor putea fi afisate remindere speciale pt a bea apa, exersa, medita etc..
+
+User
+- profilul cu date ce pot fi schimbate
+ -va afisa sub forma unui calendar pt fiecare zi task urile, notitele(jurnal), reminderele(ca un fel de istoric)
+
+JournalPage
+-in relatie de many-to-one cu user-ul(user ul poate avea mai multepagini de jurnal)
+-notitele dintr o zi 
+-contine data si ora la care a fost modificata pagina 
+
+
