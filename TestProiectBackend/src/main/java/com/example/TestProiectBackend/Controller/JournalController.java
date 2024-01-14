@@ -1,6 +1,4 @@
 package com.example.TestProiectBackend.Controller;
-
-
 import com.example.TestProiectBackend.Model.Journal;
 import com.example.TestProiectBackend.Service.JournalServiceImplementation;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +11,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @CrossOrigin
-
-
 @RequestMapping("/Journal")
 public class JournalController {
     private final JournalServiceImplementation journalServiceImplementation;
@@ -55,4 +51,3 @@ public class JournalController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }
-

@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,10 +22,15 @@ public class User {
     private String email;
     private String password;
 
+   @JsonManagedReference
     @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
     private List<Categories> categories;
+    
+    @JsonManagedReference
     @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
     private List<Reminder> reminders;
+
+    @JsonManagedReference
     @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
     private List<Journal> journals;
 

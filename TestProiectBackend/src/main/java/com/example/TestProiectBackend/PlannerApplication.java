@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @RequiredArgsConstructor
 public class PlannerApplication {
 
-	private final UserRepository userRepository;
+	//private final UserRepository userRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(PlannerApplication.class, args);

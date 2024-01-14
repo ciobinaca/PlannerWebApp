@@ -50,11 +50,7 @@ public class UserController {
 
  @PostMapping("/Login")
  public User logIn(@RequestBody User user){
-
-//  User loggedUser = userServiceImplementation.findByUsername(user.getUsername());
- // if (user. == null) {
  User loggedUser = userServiceImplementation.findByEmail(user.getEmail());
- // }
   if (loggedUser != null && loggedUser.getPassword().equals(user.getPassword())){
    return loggedUser;
   }
@@ -63,11 +59,8 @@ public class UserController {
 
  @PostMapping("/Signup")
  public void signUp(@RequestBody User user){
-     userServiceImplementation.signUp(user);
+  userServiceImplementation.signUp(user);
  }
 
-
-
 }
-
 

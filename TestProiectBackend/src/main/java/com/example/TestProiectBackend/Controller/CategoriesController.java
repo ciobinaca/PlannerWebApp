@@ -39,6 +39,12 @@ public class CategoriesController {
         List<Categories> Categories = categoriesServiceImplementation.ReadAll();
         return ResponseEntity.status(HttpStatus.OK).body(Categories);
     }
+    
+    @GetMapping("/ReadByUserId/{id}")
+    public List<Categories> ReadByUserId(@PathVariable("id") Long id){
+        List<Categories> Categories = categoriesServiceImplementation.readByUserId(id);
+        return Categories;
+    }
 
     @PutMapping("/Update")
     public ResponseEntity<Categories> update(@RequestBody Categories Categories){
@@ -51,6 +57,8 @@ public class CategoriesController {
         Categories result = categoriesServiceImplementation.Delete(id);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
+
+
 }
 
 

@@ -10,6 +10,8 @@ public interface CategoriesService {
 
     List<Categories> ReadAll();
 
+    List<Categories> readByUserId(long userId);
+    
     void Insert(Categories Categories);
 
     Categories findFirstById(Long id);
@@ -19,4 +21,5 @@ public interface CategoriesService {
     Categories Delete(Long id);
 
     Categories findById(Long id);
+
 }

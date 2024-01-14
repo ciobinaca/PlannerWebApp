@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
-import { loginButtonStyle, parentDivStyle } from "./Login.styles";
+import {loginButtonStyle, parentDivStyle } from "./Login.styles";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
@@ -27,21 +27,20 @@ const Signup = (): JSX.Element => {
             axios.post('http://localhost:8081/User/Signup', {
                 username: username,
                 email: email,
-                password: password,
+                password: password
             }).then(response => {
                 localStorage.setItem("userul", JSON.stringify(response.data));
                 console.log('Signup successful', response.data);
-                navigate('/Login');
+                navigate('/');
             });
         } catch (error) {
-            console.error('Signup failed', (error as Error).message);
-        }
+            console.error('Signup failed', (error as Error).message    )   }
     };
 
     return (
         <div style={{ ...parentDivStyle, display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}>
-            <div>
-                <img
+            <div
+            
                     style={{
                         width: "300px",
                         padding: "20px",
@@ -49,8 +48,20 @@ const Signup = (): JSX.Element => {
                         borderRadius: "8px",
                         backgroundColor: "rgba(255, 255, 255, 0.8)"
                     }}
-                    src={require('../images/happyplanner.jpg')} alt="Logo"
-                />
+                >
+                     <img
+                style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover", 
+                    opacity: 1,  
+                }}
+                src={require('../images/happyplanner.jpeg')}
+                alt="Background"
+            />
                 <div style={{ marginBottom: 20 }}>
                     <TextField
                         id="username"

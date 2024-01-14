@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,7 +51,18 @@ public class CategoriesServiceImplementation implements CategoriesService {
         Optional<Categories> optionalCategory= Optional.ofNullable(categoriesRepository.findFirstByCategoryId(id));
         return optionalCategory.orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + id));
     }
-
+    
+    @Override
+    public List<Categories> readByUserId(long userId){
+        List<Categories> categories=ReadAll();
+        List<Categories> filteredCategories=new ArrayList<Categories>();
+      for (Categories c : categories) {
+        if(c.getUser().getId()==userId)
+          filteredCategories.add(c);
+      }
+      return filteredCategories;
+    
+    }
 }
 
 

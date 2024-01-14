@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
 import { loginButtonStyle, parentDivStyle } from "./Login.styles";
+import {signupButtonStyle} from "./SignUp.styles";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
 
 export const Login = (): JSX.Element => {
     const [email, setEmail] = useState<string>("");
@@ -25,43 +25,25 @@ export const Login = (): JSX.Element => {
 
     const login = (event: any): void => {
         try {
-            axios.post('http://localhost:8081/User/Login', {
-              
-                email: email,
-                password: password
+            axios.post('http://localhost:8081/User/Login', {  
+
+            email: email,
+            password: password
+            
                 
-            }).then(response=> {    localStorage.setItem("userul", JSON.stringify(response.data));
+                }).then(response=> {localStorage.setItem("user", JSON.stringify(response.data));
             console.log('Login successful', response.data);
             navigate('/Home');
-        });       
-    
+        });           
         } catch (error) {
             console.error('Login failed', (error as Error).message);
         }
     };
 
-    // const login = async (event: React.FormEvent): Promise<void> => {
-    //     event.preventDefault();
-    //
-    //     try {
-    //         const response = await axios.get('http://localhost:8081/User/Login', {
-    //             params: {
-    //                 email: email,
-    //                 password: password,
-    //             },
-    //         });
-    //
-    //        // setUser(response.data as User); // Assuming 'User' is the backend type
-    //         console.log('Login successful', response.data);
-    //         navigate('/Home');
-    //     } catch (error) {
-    //         console.error('Login failed', (error as Error).message);
-    //     }
-    // };
-
     return (
 
          <div
+         
               style={{
                  ...parentDivStyle,
                  display: "flex",
@@ -71,17 +53,28 @@ export const Login = (): JSX.Element => {
 
               }}
               >
-              <div>
                   <img
+                style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover", 
+                    opacity: 1,
+                }}
+                src={require('../images/happyplanner.jpeg')}
+                alt="Background"
+            /> 
+              <div
                  style={{
                      width: "300px",
                      padding: "20px",
                      border: "1px solid #ccc",
                      borderRadius: "8px",
-                     backgroundColor: "rgba(255, 255, 255, 0.8)" // You can adjust the background color opacity
+                     backgroundColor: "rgba(255, 255, 255, 0.8)" 
                  }}
-                      src={require('../images/happyplanner.jpg')} alt="Logo"  />
-                  
+                  >
                  <div style={{ marginBottom: 20 }}>
                      <TextField
                          id="email"
@@ -101,10 +94,10 @@ export const Login = (): JSX.Element => {
                          fullWidth
                          value={password}
                          onChange={onChangePassword}
-                     />
+                      />
                  </div>
                  <Button
-                     style={loginButtonStyle}
+                     style={loginButtonStyle }
                      onClick={login}
                      variant="contained"
                      color="primary"
@@ -113,10 +106,10 @@ export const Login = (): JSX.Element => {
                     Login
                 </Button>
                   <Button
-                      style={loginButtonStyle}
+                      style={signupButtonStyle}
                       onClick={navigateToSignup}
                       // variant="contained"
-                      color="primary"
+                      //color="primary"
                        fullWidth
                   >
                       Sign up

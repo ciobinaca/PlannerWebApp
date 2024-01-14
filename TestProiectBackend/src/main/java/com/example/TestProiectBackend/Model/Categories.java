@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,8 +21,18 @@ public class Categories {
     private String name;
     private Integer noOfTasks;
 
+    @JsonManagedReference
     @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
     @Column(insertable=false, updatable=false)
     private List<Task> tasks;
+    
+    @JsonBackReference
+    @ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+    @JoinColumn(name="userId")
+    private User user;
 
+    public User getUser() {
+        return user;
+    }
+     
 }

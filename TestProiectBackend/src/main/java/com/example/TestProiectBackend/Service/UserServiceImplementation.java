@@ -65,7 +65,7 @@ public class UserServiceImplementation implements UserService {
     }
 
     public void signUp(User user) {
-        if (userRepository.findUserByEmail(user.getEmail()) == null)
+        if (user.getEmail()!=null && userRepository.findUserByEmail(user.getEmail()) == null)
             Insert(user);
     }
 

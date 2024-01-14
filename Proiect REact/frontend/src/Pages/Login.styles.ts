@@ -3,7 +3,7 @@ import React from "react";
 
 export const parentDivStyle: React.CSSProperties ={
     position: "relative",
-    left:50,
+    left:0,
     maxWidth: "100%",
     margin: "0 auto",
     backgroundSize: "cover",
@@ -17,5 +17,10 @@ export const parentDivStyle: React.CSSProperties ={
 export const loginButtonStyle: React.CSSProperties ={
     position: "relative",
     left:0,
-    top:0
-}
+    top:0,
+    backgroundColor: '#8DB600', 
+    color: '#fff', 
+} 
+
+//document.getElementsByClassName("taskulete").
+

@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,6 +21,7 @@ public class Reminder {
     private LocalDateTime startDate;
     private String descriereMemento;
 
+    @JsonBackReference
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="taskId")
     private Task task;
