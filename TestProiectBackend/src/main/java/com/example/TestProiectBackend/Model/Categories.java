@@ -8,12 +8,13 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-//@Data
+@Data
 public class Categories {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,6 +27,7 @@ public class Categories {
     @Column(insertable=false, updatable=false)
     private List<Task> tasks;
     
+    @JsonIgnore
     @JsonBackReference
     @ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
     @JoinColumn(name="userId")

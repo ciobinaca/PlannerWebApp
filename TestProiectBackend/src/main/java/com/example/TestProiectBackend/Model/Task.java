@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
@@ -30,13 +31,19 @@ public class Task {
     private int priority;
     private String status;
 
+
+    @JsonIgnore
     @JsonBackReference
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="categoryId")
     private Categories categories;
     
+
     @JsonManagedReference
     @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
     private List<Reminder> reminders;
+    
+    
+
 
 }

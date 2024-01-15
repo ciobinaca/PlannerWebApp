@@ -1,6 +1,7 @@
 package com.example.TestProiectBackend.Controller;
 
 import com.example.TestProiectBackend.Model.Categories;
+import com.example.TestProiectBackend.Model.Task;
 import com.example.TestProiectBackend.Service.CategoriesServiceImplementation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,21 +29,36 @@ public class CategoriesController {
         return "ok";
     }
 
-    @PostMapping("/Insert")
-    public ResponseEntity<String> insert(@RequestBody Categories Categories){
-        categoriesServiceImplementation.Insert(Categories);
+    @PostMapping("/Insert/{id}")
+    public ResponseEntity<String> insert(@RequestBody String categories, @PathVariable("id") long id){
+        Categories c = new Categories();
+        c.setName(categories);
+        categoriesServiceImplementation.Insert(c,id);
         return ResponseEntity.ok("Data inserted successfully");
     }
 
     @GetMapping("/ReadAll")
-    public ResponseEntity<List<Categories>> readAll(){
-        List<Categories> Categories = categoriesServiceImplementation.ReadAll();
+    public ResponseEntity readAll(){
+        List<Categories> Categories = categoriesServiceImplementation.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(Categories);
     }
     
     @GetMapping("/ReadByUserId/{id}")
     public List<Categories> ReadByUserId(@PathVariable("id") Long id){
         List<Categories> Categories = categoriesServiceImplementation.readByUserId(id);
+        for(Categories category: Categories){
+            if(category.getTasks() != null)
+            {
+                for(Task task: category.getTasks())
+                    task.setCategories(null);
+                
+                if(category.getUser() != null){
+                    category.getUser().setCategories(null);
+                    //for(...)
+                    //category.getUser().getReminders();
+                }
+            }
+        }
         return Categories;
     }
 

@@ -23,7 +23,7 @@ interface Task {
 
 
 const Tasks = (): JSX.Element => {
-  const [userId, setId] =useState<number>(0);
+  const [userId, setId] =useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<Category| null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [newCategory, setNewCategory] = useState<string>("");
@@ -32,7 +32,7 @@ const Tasks = (): JSX.Element => {
 
   useEffect(()=> {
 
-    const user =  JSON.parse(localStorage.getItem("userul") || "");
+    const user =  JSON.parse(localStorage.getItem("user") || "");
     if(user != null)
     {
         console.log(user);
@@ -44,6 +44,7 @@ const Tasks = (): JSX.Element => {
 },[])
 
 const ReadAllCategories = (): void => {
+ 
    try {
       axios.get(`http://localhost:8081/Category/ReadByUserId/${userId}`, {
       }).then(response=> { 
@@ -60,19 +61,20 @@ const ReadAllCategories = (): void => {
 };
   
 useEffect(()=> {
+  if(userId === undefined || userId === null)
+    return;
+  //const storedCategoriesString=localStorage.getItem("categorii") || "[]";
 
-  const storedCategoriesString=localStorage.getItem("categorii") || "[]";
-
-  const storedCategories: Category[] = JSON.parse(storedCategoriesString);
+  //const storedCategories: Category[] = JSON.parse(storedCategoriesString);
   ReadAllCategories();
-  setCategories(storedCategories);
+  //setCategories(storedCategories);
 
-},[])
+},[userId])
   
   const ReadAllTasks = (category:Category) => {
     setSelectedCategory(category);
      try {
-        axios.get('http://localhost:8081/Task/ReadAll', {
+        axios.get(`http://localhost:8081/Task/ReadByCategoryId/${category.categoryId}`, {
             
         }).then(response=> { 
         localStorage.setItem("taskulete", JSON.stringify(response.data));
@@ -94,22 +96,24 @@ useEffect(()=> {
     const storedTasks: Task[] = JSON.parse(storedTasksString);
     setTasks(storedTasks);
   
-  },[])
+  },[selectedCategory])
 
-  // const handleSelectCategory = (category: number) => {
 
-  //   setSelectedCategory(category);
-  //   // Filter tasks based on the selected categoryId
-  //   const tasksForCategory = tasks.filter((task) => task.categoryId === category);
-  //   setTasks(tasksForCategory);
-  // };
-
-  // const handleAddCategory = () => {
-  //   if (newCategory.trim() !== "") {
-  //     setCategories([...categories, newCategory]);
-  //     setNewCategory("");
-  //   }
-  // };
+  const handleAddCategory = () => {
+    if (newCategory.trim() !== "") {
+      try {
+        axios.post(`http://localhost:8081/Category/Insert/${userId}`, {
+          categories: newCategory,
+        }).then(response => {
+          // Update the local state with the new category
+          setCategories([...categories, response.data]);
+          setNewCategory("");
+        });
+      } catch (error) {
+        console.error('Category creation failed', (error as Error).message);
+      }
+    }
+  };
 
   // const handleAddTask = () => {
   //   if (newTask.trim() !== "") {
@@ -135,7 +139,8 @@ useEffect(()=> {
                 alt="Background"
             />
       
-      <div style={{marginTop:30, padding: "60px", overflow: "scroll" }}>
+      <div style={{marginTop:30, padding: "60px", //overflow: "scroll" 
+      }}>
         <List>
           { categories.map((category) => (
             <ListItem
@@ -154,7 +159,7 @@ useEffect(()=> {
           value={newCategory}
           onChange={(e) => setNewCategory(e.target.value)}
         />
-        <Button style={loginButtonStyle } variant="contained" color="primary" //onClick={handleAddCategory}
+        <Button style={loginButtonStyle } variant="contained" color="primary"//onClick={handleAddCategory} 
         >
           Add Category
         </Button>
@@ -164,11 +169,16 @@ useEffect(()=> {
       <div style={{flex: 1, padding: "40px"}}>
         <h2>Tasks for {selectedCategory?.name || "All Categories"}</h2>
         <ul>
-          {tasks.map((task, index) => (
+          {
+          tasks.length > 0 ?
+          tasks.map((task, index) => (
             <li key={index}><strong>Title:</strong> {task.title} - <strong>Description:</strong> {task.description} - <strong>Start:</strong> {JSON.stringify(task.start)} - <strong>Finish:</strong> {JSON.stringify(task.finish)} </li>
-          ))}
+          ))
+          :
+          <p>No tasks yet...</p>
+          }
         </ul>
-        <TextField
+        <TextField 
           label="New Task"
           variant="outlined"
           value={newTask}

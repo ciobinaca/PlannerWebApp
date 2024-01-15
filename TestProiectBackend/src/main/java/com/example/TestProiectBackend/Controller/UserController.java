@@ -1,5 +1,8 @@
 package com.example.TestProiectBackend.Controller;
 
+import com.example.TestProiectBackend.Model.Categories;
+import com.example.TestProiectBackend.Model.Reminder;
+import com.example.TestProiectBackend.Model.Task;
 import com.example.TestProiectBackend.Model.User;
 import com.example.TestProiectBackend.Service.UserServiceImplementation;
 import jakarta.persistence.EntityNotFoundException;
@@ -9,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -49,9 +53,25 @@ public class UserController {
  }
 
  @PostMapping("/Login")
- public User logIn(@RequestBody User user){
- User loggedUser = userServiceImplementation.findByEmail(user.getEmail());
-  if (loggedUser != null && loggedUser.getPassword().equals(user.getPassword())){
+ public User logIn(@RequestBody Map<String, String> credentials){
+ User loggedUser = userServiceImplementation.findByEmail(credentials.get("email"));
+   if(loggedUser.getCategories() != null)
+            {
+                for(Categories category:loggedUser.getCategories())
+                    category.setUser(null);
+                
+                if(loggedUser.getReminders() != null){
+                    for(Reminder r: loggedUser.getReminders())
+                    { if(r.getTask()!=null)
+                        {r.getTask().setReminders(null);
+                            if (r.getTask().getCategories()!=null){
+                              r.getTask().getCategories().setUser(null);
+                            }
+                        } 
+                      }   
+                }
+            }
+  if (loggedUser != null && loggedUser.getPassword().equals(credentials.get("password"))){
    return loggedUser;
   }
   else return null;

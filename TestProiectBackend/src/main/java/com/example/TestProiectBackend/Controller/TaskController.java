@@ -1,6 +1,7 @@
 package com.example.TestProiectBackend.Controller;
 
 
+import com.example.TestProiectBackend.Model.Categories;
 import com.example.TestProiectBackend.Model.Task;
 import com.example.TestProiectBackend.Service.TaskServiceImplementation;
 import lombok.RequiredArgsConstructor;
@@ -39,8 +40,28 @@ public class TaskController {
 
     @GetMapping("/ReadAll")
     public ResponseEntity<List<Task>> readAll(){
-        List<Task> Tasks = taskServiceImplementation.ReadAll();
+        List<Task> Tasks = taskServiceImplementation.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(Tasks);
+    }
+    
+     
+    @GetMapping("/ReadByCategoryId/{id}")
+    public  List<Task> ReadByCategoryId(@PathVariable("id") Long id){
+        List<Task> Tasks= taskServiceImplementation.readByCategoryId(id);
+        // for(Categories category: Categories){
+        //     if(category.getTasks() != null)
+        //     {
+        //         for(Task task: category.getTasks())
+        //             task.setCategories(null);
+                
+        //         if(category.getUser() != null){
+        //             category.getUser().setCategories(null);
+        //             //for(...)
+        //             //category.getUser().getReminders();
+        //         }
+        //     }
+        // }
+        return Tasks;
     }
 
     @PutMapping("/Update")

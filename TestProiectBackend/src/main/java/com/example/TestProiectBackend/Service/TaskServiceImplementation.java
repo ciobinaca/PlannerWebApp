@@ -1,4 +1,5 @@
 package com.example.TestProiectBackend.Service;
+import com.example.TestProiectBackend.Model.Categories;
 import com.example.TestProiectBackend.Model.Task;
 import com.example.TestProiectBackend.Repository.TaskRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -6,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -15,7 +17,7 @@ public class TaskServiceImplementation implements TaskService{
     private TaskRepository TaskRepository;
 
     @Override
-    public List<Task> ReadAll() {
+    public List<Task> findAll() {
         return (List<Task>) TaskRepository.findAll();
     }
 
@@ -49,6 +51,17 @@ public class TaskServiceImplementation implements TaskService{
                 .orElseThrow(() -> new EntityNotFoundException("Booking not found with id: " + id));
     }
 
+     @Override
+    public List<Task> readByCategoryId(long categoryId){
+        List<Task> tasks=findAll();
+        List<Task> filteredTasks=new ArrayList<Task>();
+      for (Task t: tasks) {
+        if(t.getCategories().getCategoryId()==categoryId)
+          filteredTasks.add(t);
+      }
+      return filteredTasks;
+    
+    }
 
 }
 

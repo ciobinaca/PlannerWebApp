@@ -8,11 +8,11 @@ import java.util.List;
 @Component
 public interface CategoriesService {
 
-    List<Categories> ReadAll();
+    List<Categories> findAll();
 
     List<Categories> readByUserId(long userId);
     
-    void Insert(Categories Categories);
+    void Insert(Categories categories, long id);
 
     Categories findFirstById(Long id);
 

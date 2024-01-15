@@ -1,7 +1,10 @@
 package com.example.TestProiectBackend.Service;
 
 import com.example.TestProiectBackend.Model.Categories;
+import com.example.TestProiectBackend.Model.User;
 import com.example.TestProiectBackend.Repository.CategoriesRepository;
+import com.example.TestProiectBackend.Repository.UserRepository;
+
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +19,17 @@ import java.util.Optional;
 public class CategoriesServiceImplementation implements CategoriesService {
     @Autowired
     private CategoriesRepository categoriesRepository;
+    private UserRepository userRepository;
 
     @Override
-    public List<Categories> ReadAll() {
-        return (List<Categories>) categoriesRepository.findAll();
+    public List<Categories> findAll() {
+        return categoriesRepository.findAll();
     }
 
     @Override
-    public void Insert(Categories Categories) {
-        categoriesRepository.save(Categories);
+    public void Insert(Categories categories, long id) {
+        categories.setUser(userRepository.findFirstById(id));
+        categoriesRepository.save(categories);
     }
 
     @Override
@@ -54,7 +59,7 @@ public class CategoriesServiceImplementation implements CategoriesService {
     
     @Override
     public List<Categories> readByUserId(long userId){
-        List<Categories> categories=ReadAll();
+        List<Categories> categories=findAll();
         List<Categories> filteredCategories=new ArrayList<Categories>();
       for (Categories c : categories) {
         if(c.getUser().getId()==userId)
