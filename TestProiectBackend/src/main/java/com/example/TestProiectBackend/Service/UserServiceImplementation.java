@@ -1,7 +1,10 @@
 package com.example.TestProiectBackend.Service;
 
 import java.util.Optional;
+
+import com.example.TestProiectBackend.Model.Task;
 import com.example.TestProiectBackend.Model.User;
+import com.example.TestProiectBackend.Repository.TaskRepository;
 import com.example.TestProiectBackend.Repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +35,17 @@ public class UserServiceImplementation implements UserService {
         return userRepository.findFirstById(id);
     }
 
-    @Override
-    public User Update(User user) {
-        return userRepository.save(user);
+     @Override
+    public User Update(User User) {
+        User user = userRepository.findById(User.getId())
+        .orElseThrow(() -> new RuntimeException("User not found"));
+
+    user.setUsername(User.getUsername());
+    user.setEmail(User.getEmail());
+    user.setPassword(User.getPassword());
+   // user.setAdmin(User.getAdmin());
+
+return  user;
     }
 
     @Override
@@ -65,8 +76,11 @@ public class UserServiceImplementation implements UserService {
     }
 
     public void signUp(User user) {
-        if (user.getEmail()!=null && userRepository.findUserByEmail(user.getEmail()) == null)
-            Insert(user);
+        if (user != null && user.getEmail() != null && user.getUsername() != null && user.getPassword() != null)
+           if (userRepository.findUserByEmail(user.getEmail()) == null) 
+               Insert(user);
+               else throw new RuntimeException("email already in use ");  
+          else throw new RuntimeException("invalid user");     
     }
 
 }

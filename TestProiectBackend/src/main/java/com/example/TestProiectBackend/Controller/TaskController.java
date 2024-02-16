@@ -32,9 +32,9 @@ public class TaskController {
         return "ok";
     }
 
-    @PostMapping("/Insert")
-    public ResponseEntity<String> insert(@RequestBody Task Task){
-        taskServiceImplementation.Insert(Task);
+    @PostMapping("/Insert/{id}")
+    public ResponseEntity<String> insert(@RequestBody Task Task, @PathVariable("id") Long id){
+        taskServiceImplementation.Insert(Task,id);
         return ResponseEntity.ok("Data inserted successfully");
     }
 
@@ -48,19 +48,7 @@ public class TaskController {
     @GetMapping("/ReadByCategoryId/{id}")
     public  List<Task> ReadByCategoryId(@PathVariable("id") Long id){
         List<Task> Tasks= taskServiceImplementation.readByCategoryId(id);
-        // for(Categories category: Categories){
-        //     if(category.getTasks() != null)
-        //     {
-        //         for(Task task: category.getTasks())
-        //             task.setCategories(null);
-                
-        //         if(category.getUser() != null){
-        //             category.getUser().setCategories(null);
-        //             //for(...)
-        //             //category.getUser().getReminders();
-        //         }
-        //     }
-        // }
+        
         return Tasks;
     }
 
@@ -70,9 +58,9 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.OK).body(updatedTask);
     }
 
-    @DeleteMapping("/Delete/{id}")
-    public ResponseEntity<Task> delete(@PathVariable("id")Long id){
-        Task result = taskServiceImplementation.Delete(id);
+    @DeleteMapping("/Delete/{id}/{cid}")
+    public ResponseEntity<Task> delete(@PathVariable("id")Long id, @PathVariable("cid")Long cid){
+        Task result = taskServiceImplementation.Delete(id, cid);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

@@ -21,17 +21,18 @@ public class User {
     private String username;
     private String email;
     private String password;
+    private Boolean admin;
 
-   @JsonManagedReference
-    @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+  // @JsonManagedReference
+    @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)
     private List<Categories> categories;
     
-    @JsonManagedReference
-    @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+   // @JsonManagedReference
+   @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
     private List<Reminder> reminders;
 
-    @JsonManagedReference
-    @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+   // @JsonManagedReference
+   @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
     private List<Journal> journals;
 
 }

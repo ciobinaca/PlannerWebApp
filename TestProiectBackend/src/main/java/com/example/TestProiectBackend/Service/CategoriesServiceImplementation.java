@@ -1,8 +1,10 @@
 package com.example.TestProiectBackend.Service;
 
 import com.example.TestProiectBackend.Model.Categories;
+import com.example.TestProiectBackend.Model.Task;
 import com.example.TestProiectBackend.Model.User;
 import com.example.TestProiectBackend.Repository.CategoriesRepository;
+import com.example.TestProiectBackend.Repository.TaskRepository;
 import com.example.TestProiectBackend.Repository.UserRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale.Category;
 import java.util.Optional;
 
 @Service
@@ -19,7 +22,8 @@ import java.util.Optional;
 public class CategoriesServiceImplementation implements CategoriesService {
     @Autowired
     private CategoriesRepository categoriesRepository;
-    private UserRepository userRepository;
+    @Autowired
+    private UserService userServiceImplementation;
 
     @Override
     public List<Categories> findAll() {
@@ -28,7 +32,8 @@ public class CategoriesServiceImplementation implements CategoriesService {
 
     @Override
     public void Insert(Categories categories, long id) {
-        categories.setUser(userRepository.findFirstById(id));
+        User u=userServiceImplementation.findFirstById(id);
+        u.getCategories().add(categories);
         categoriesRepository.save(categories);
     }
 
@@ -38,17 +43,25 @@ public class CategoriesServiceImplementation implements CategoriesService {
     }
 
     @Override
-    public Categories Update(Categories Categories) {
-        return categoriesRepository.save(Categories);
+    public void Update(Categories Categories) {
+         Categories category = categoriesRepository.findById(Categories.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        category.setName(Categories.getName());
+
     }
 
     @Override
-    public Categories Delete(Long id) {
-        Categories categoriesToDelete = categoriesRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Booking not found with id: " + id));
-
-        categoriesRepository.delete(categoriesToDelete);
-        return categoriesToDelete;
+    public Categories Delete(Long id, Long userId) {
+        Categories categoryToDelete = categoriesRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + id));
+        List<Categories> userCategories= userServiceImplementation.findById(userId).getCategories();
+        for(Categories c: userCategories)
+           if(c.getCategoryId()==id)
+            {userCategories.remove(c);
+                break;}
+        categoriesRepository.deleteById(categoryToDelete.getCategoryId());
+        return categoryToDelete;
     }
 
     @Override
@@ -59,14 +72,14 @@ public class CategoriesServiceImplementation implements CategoriesService {
     
     @Override
     public List<Categories> readByUserId(long userId){
-        List<Categories> categories=findAll();
-        List<Categories> filteredCategories=new ArrayList<Categories>();
-      for (Categories c : categories) {
-        if(c.getUser().getId()==userId)
-          filteredCategories.add(c);
-      }
-      return filteredCategories;
+        User user = userServiceImplementation.findById(userId);
+        return user.getCategories();
     
+    }
+
+      @Override
+    public List<Categories> ReadAll() {
+        return (List<Categories>) categoriesRepository.findAll();
     }
 }
 

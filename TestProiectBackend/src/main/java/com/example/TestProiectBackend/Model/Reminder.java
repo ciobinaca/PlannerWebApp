@@ -22,10 +22,10 @@ public class Reminder {
     private LocalDateTime startDate;
     private String descriereMemento;
 
-    @JsonIgnore
-    @JsonBackReference
-    @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="taskId")
-    private Task task;
+//     @JsonIgnore
+//    // @JsonBackReference
+//     @ManyToOne(fetch=FetchType.EAGER)
+//     @JoinColumn(name="taskId")
+//     private Task task;
 
 }

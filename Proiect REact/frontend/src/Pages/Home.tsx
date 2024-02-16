@@ -6,7 +6,9 @@ import { useNavigate } from "react-router-dom";
 const HomePage = (): JSX.Element => {
     const navigate = useNavigate();
     const navigateToTasks = (): void => {
-        navigate('/MyTasks');
+        navigate('/MyTasks');}
+    const navigateToUser = (): void => {
+            navigate('/profile');    
     };
 
     return (
@@ -37,7 +39,7 @@ const HomePage = (): JSX.Element => {
     color: '#fff' }}>
                     My Tasks
                 </Button>
-                <Button component={Link} to="/profile" variant="contained" color="secondary" style={{ marginRight: 10,backgroundColor: '#8DB600', 
+                <Button component={Link} to="/profile" onClick={navigateToUser} variant="contained" color="secondary" style={{ marginRight: 10,backgroundColor: '#8DB600', 
     color: '#fff' }}>
                     View Profile
                 </Button>

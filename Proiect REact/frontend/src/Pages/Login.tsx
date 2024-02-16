@@ -22,22 +22,34 @@ export const Login = (): JSX.Element => {
     const navigateToSignup = (): void => {
         navigate('/SignUp');
     };
-
+    
     const login = (event: any): void => {
+        if(email!="" && password!="" ){
         try {
-            axios.post('http://localhost:8081/User/Login', {  
+               
+                 axios.post('http://localhost:8081/User/Login', {  
 
-            email: email,
-            password: password
-            
-                
-                }).then(response=> {localStorage.setItem("user", JSON.stringify(response.data));
-            console.log('Login successful', response.data);
-            navigate('/Home');
-        });           
+                    email: email,
+                    password: password
+           
+                 }).then(response=> {localStorage.setItem("user", JSON.stringify(response.data));
+                 console.log('Login successful', response.data);
+                 if(response.data.admin==1)
+                 navigate('/Admin')
+                else
+                 { if(response.data == null)
+                  alert("Login failed. Wrong credentials.");
+                 navigate('/Home');
+                 }
+                 });
+             
+                   
         } catch (error) {
+           
             console.error('Login failed', (error as Error).message);
-        }
+           
+        }}
+        else alert("Login failed. Wrong credentials.");
     };
 
     return (
@@ -116,7 +128,6 @@ export const Login = (): JSX.Element => {
                   </Button>
               </div>
              </div>
-//</div>
      );
 };
 

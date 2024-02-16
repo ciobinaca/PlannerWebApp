@@ -22,19 +22,19 @@ public class Categories {
     private String name;
     private Integer noOfTasks;
 
-    @JsonManagedReference
+  //  @JsonManagedReference
     @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
     @Column(insertable=false, updatable=false)
     private List<Task> tasks;
     
-    @JsonIgnore
-    @JsonBackReference
-    @ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-    @JoinColumn(name="userId")
-    private User user;
+  //   @JsonIgnore 
+  // //  @JsonBackReference
+  //   @ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+  //   @JoinColumn(name="userId")
+  //   private User user;
 
-    public User getUser() {
-        return user;
-    }
+    // public User getUser() {
+    //     return user;
+    // }
      
 }

@@ -23,6 +23,7 @@ const Signup = (): JSX.Element => {
     };
 
     const signup = (event: React.MouseEvent): void => {
+      if(email!="" && password!="" && username!="")
         try {
             axios.post('http://localhost:8081/User/Signup', {
                 username: username,
@@ -34,7 +35,10 @@ const Signup = (): JSX.Element => {
                 navigate('/');
             });
         } catch (error) {
+           
             console.error('Signup failed', (error as Error).message    )   }
+
+      else alert("Signup failed. Empty fields.");     
     };
 
     return (

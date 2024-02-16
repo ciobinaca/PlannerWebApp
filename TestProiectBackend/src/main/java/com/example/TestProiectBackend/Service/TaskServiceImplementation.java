@@ -1,6 +1,8 @@
 package com.example.TestProiectBackend.Service;
 import com.example.TestProiectBackend.Model.Categories;
+import com.example.TestProiectBackend.Model.Reminder;
 import com.example.TestProiectBackend.Model.Task;
+import com.example.TestProiectBackend.Model.User;
 import com.example.TestProiectBackend.Repository.TaskRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -15,16 +17,19 @@ import java.util.List;
 public class TaskServiceImplementation implements TaskService{
     @Autowired
     private TaskRepository TaskRepository;
-
+    @Autowired
+    private CategoriesServiceImplementation  categoriesServiceImplementation;
     @Override
     public List<Task> findAll() {
         return (List<Task>) TaskRepository.findAll();
     }
 
     @Override
-    public void Insert(Task Task) {
-        TaskRepository.save(Task);
-    }
+    public void Insert(Task Task, long categoryId) {
+        Categories c=categoriesServiceImplementation.findFirstById(categoryId);
+            c.getTasks().add(Task);
+            TaskRepository.save(Task);
+        }
 
     @Override
     public Task findFirstById(Long id) {
@@ -33,36 +38,49 @@ public class TaskServiceImplementation implements TaskService{
 
     @Override
     public Task Update(Task Task) {
-        return TaskRepository.save(Task);
+        Task task = TaskRepository.findById(Task.getTaskId())
+        .orElseThrow(() -> new RuntimeException("Task not found"));
+
+    task.setTitle(Task.getTitle());
+    task.setDescription(Task.getDescription());
+    task.setDueDate(Task.getDueDate());
+    task.setPriority(Task.getPriority());
+    task.setStatus(Task.getStatus());
+
+return task;
     }
 
     @Override
-    public Task Delete(Long id) {
-        Task bookingToDelete = TaskRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Booking not found with id: " + id));
-
-        TaskRepository.delete(bookingToDelete);
-        return bookingToDelete;
+    public Task Delete(Long id, long catId) {
+        Task taskToDelete = TaskRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + id));
+List<Task> categoryTasks= categoriesServiceImplementation.findById(catId).getTasks();
+for(Task c: categoryTasks)
+   if(c.getTaskId()==id)
+    {categoryTasks.remove(c);
+        break;}
+TaskRepository.deleteById(taskToDelete.getTaskId());
+return taskToDelete;
     }
 
     @Override
     public Task findById(Long id) {
         return TaskRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Booking not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("not found: " + id));
+    }
+
+    @Override
+    public List<Task> ReadAll() {
+        return (List<Task>) TaskRepository.findAll();
     }
 
      @Override
     public List<Task> readByCategoryId(long categoryId){
-        List<Task> tasks=findAll();
-        List<Task> filteredTasks=new ArrayList<Task>();
-      for (Task t: tasks) {
-        if(t.getCategories().getCategoryId()==categoryId)
-          filteredTasks.add(t);
-      }
-      return filteredTasks;
-    
-    }
+        Categories cat = categoriesServiceImplementation.findById(categoryId);
+            List<Task> tasks = cat.getTasks();
 
+            return tasks;
+}
 }
 
 

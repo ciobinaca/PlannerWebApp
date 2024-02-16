@@ -55,25 +55,30 @@ public class UserController {
  @PostMapping("/Login")
  public User logIn(@RequestBody Map<String, String> credentials){
  User loggedUser = userServiceImplementation.findByEmail(credentials.get("email"));
-   if(loggedUser.getCategories() != null)
-            {
-                for(Categories category:loggedUser.getCategories())
-                    category.setUser(null);
+  //  if(loggedUser.getCategories() != null)
+  //           {
+  //               for(Categories category:loggedUser.getCategories())
+  //                   category.setUser(null);
                 
-                if(loggedUser.getReminders() != null){
-                    for(Reminder r: loggedUser.getReminders())
-                    { if(r.getTask()!=null)
-                        {r.getTask().setReminders(null);
-                            if (r.getTask().getCategories()!=null){
-                              r.getTask().getCategories().setUser(null);
-                            }
-                        } 
-                      }   
-                }
-            }
+  //               if(loggedUser.getReminders() != null){
+  //                   for(Reminder r: loggedUser.getReminders())
+  //                   { if(r.getTask()!=null)
+  //                       {r.getTask().setReminders(null);
+  //                           if (r.getTask().getCategories()!=null){
+  //                             r.getTask().getCategories().setUser(null);
+  //                           }
+  //                       } 
+  //                     }   
+  //               }
+  //           }
   if (loggedUser != null && loggedUser.getPassword().equals(credentials.get("password"))){
+    if(loggedUser.getEmail().equals("miau"))
+    loggedUser.setAdmin(true);
+    else
+    loggedUser.setAdmin(false);
    return loggedUser;
   }
+  
   else return null;
  }
 

@@ -11,7 +11,9 @@ public interface TaskService {
 
     List<Task> findAll();
 
-    void Insert(Task Task);
+    public List<Task> ReadAll();
+
+    public void Insert(Task Task, long categoryId);
 
     Task findFirstById(Long id);
 
@@ -19,7 +21,7 @@ public interface TaskService {
     
     List<Task> readByCategoryId(long categoryId);
 
-    Task Delete(Long id);
+    Task Delete(Long id, long catId);
 
     Task findById(Long id);
 }

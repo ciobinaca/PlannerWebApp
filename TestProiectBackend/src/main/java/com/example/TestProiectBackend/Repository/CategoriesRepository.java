@@ -13,7 +13,8 @@ import org.springframework.stereotype.Repository;
 public interface CategoriesRepository extends CrudRepository<Categories, Long> {
 
     Categories findFirstByCategoryId(Long id);
-
+    void deleteById(Long id);
     List<Categories> findAll();
+    
 }
 

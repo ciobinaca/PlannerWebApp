@@ -30,9 +30,9 @@ public class CategoriesController {
     }
 
     @PostMapping("/Insert/{id}")
-    public ResponseEntity<String> insert(@RequestBody String categories, @PathVariable("id") long id){
-        Categories c = new Categories();
-        c.setName(categories);
+    public ResponseEntity<String> insert(@RequestBody Categories category, @PathVariable("id") long id){
+         Categories c = category;
+         c.setName(category.getName());
         categoriesServiceImplementation.Insert(c,id);
         return ResponseEntity.ok("Data inserted successfully");
     }
@@ -46,31 +46,18 @@ public class CategoriesController {
     @GetMapping("/ReadByUserId/{id}")
     public List<Categories> ReadByUserId(@PathVariable("id") Long id){
         List<Categories> Categories = categoriesServiceImplementation.readByUserId(id);
-        for(Categories category: Categories){
-            if(category.getTasks() != null)
-            {
-                for(Task task: category.getTasks())
-                    task.setCategories(null);
-                
-                if(category.getUser() != null){
-                    category.getUser().setCategories(null);
-                    //for(...)
-                    //category.getUser().getReminders();
-                }
-            }
-        }
         return Categories;
     }
 
     @PutMapping("/Update")
-    public ResponseEntity<Categories> update(@RequestBody Categories Categories){
-        Categories updatedCategories = categoriesServiceImplementation.Update(Categories);
-        return ResponseEntity.status(HttpStatus.OK).body(updatedCategories);
+    public void update(@RequestBody Categories Categories){
+       categoriesServiceImplementation.Update(Categories);
+       
     }
 
-    @DeleteMapping("/Delete/{id}")
-    public ResponseEntity<Categories> delete(@PathVariable("id")Long id){
-        Categories result = categoriesServiceImplementation.Delete(id);
+    @DeleteMapping("/Delete/{id}/{user}")
+    public ResponseEntity<Categories> delete(@PathVariable("id")Long id, @PathVariable("user")Long userId){
+        Categories result = categoriesServiceImplementation.Delete(id,userId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

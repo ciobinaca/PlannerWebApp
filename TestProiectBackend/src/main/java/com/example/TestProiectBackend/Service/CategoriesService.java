@@ -8,6 +8,8 @@ import java.util.List;
 @Component
 public interface CategoriesService {
 
+    public List<Categories> ReadAll();
+
     List<Categories> findAll();
 
     List<Categories> readByUserId(long userId);
@@ -16,9 +18,9 @@ public interface CategoriesService {
 
     Categories findFirstById(Long id);
 
-    Categories Update(Categories Categories);
+   void Update(Categories Categories);
 
-    Categories Delete(Long id);
+    Categories Delete(Long id, Long UserId);
 
     Categories findById(Long id);
 

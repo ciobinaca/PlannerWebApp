@@ -20,26 +20,26 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long taskId;
     private String title;
     private String description;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDateTime dueDate;
     private int priority;
     private String status;
 
 
-    @JsonIgnore
-    @JsonBackReference
-    @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="categoryId")
-    private Categories categories;
+  //   @JsonIgnore
+  //  // @JsonBackReference
+  //   @ManyToOne(fetch=FetchType.EAGER)
+  //   @JoinColumn(name="categoryId")
+  //   private Categories categories;
     
 
-    @JsonManagedReference
+  //  @JsonManagedReference
     @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
     private List<Reminder> reminders;
     
