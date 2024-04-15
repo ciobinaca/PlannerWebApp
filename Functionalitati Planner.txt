@@ -19,10 +19,9 @@ Reminder
 
 User
 - profilul cu date ce pot fi schimbate
- -va afisa sub forma unui calendar pt fiecare zi task urile, notitele(jurnal), reminderele(ca un fel de istoric)
 
 JournalPage
--in relatie de many-to-one cu user-ul(user ul poate avea mai multepagini de jurnal)
+-in relatie de many-to-one cu user-ul(user ul poate avea mai multe pagini de jurnal)
 -notitele dintr o zi 
 -contine data si ora la care a fost modificata pagina 
 
